@@ -12,6 +12,24 @@ public final class CommandConstants {
      */
     public static final int MIN_ACCESS_AMOUNT = 1;
 
+    // Command names
+    /**
+     * Represents the name of the load command.
+     */
+    public static final String LOAD_COMMAND_NAME = "load";
+    /**
+     * Represents the name of the run command.
+     */
+    public static final String RUN_COMMAND_NAME = "run";
+    /**
+     * Represents the name of the change command.
+     */
+    public static final String CHANGE_COMMAND_NAME = "change";
+    /**
+     * Represents the name of the quit command.
+     */
+    public static final String QUIT_COMMAND_NAME = "quit";
+
     // Command messages
     /**
      * Represents the prefix used for error messages.
@@ -29,6 +47,7 @@ public final class CommandConstants {
      * Represents the string for a new line.
      */
     public static final String NEXT_LINE = "\n";
+
 
     /**
      * Private constructor to prevent instantiation.

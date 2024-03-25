@@ -202,7 +202,7 @@ public class LoadCommand implements Command {
             }
         } else {
             name = tag;
-            newTag = TagFactory.createTag(BINARY_TAG_NAME, name, String.valueOf(BinaryTagType.DEFINED).toLowerCase());
+            newTag = TagFactory.createTag(BINARY_TAG_NAME, name, String.valueOf(BinaryTagType.DEFINED));
         }
         return newTag;
     }

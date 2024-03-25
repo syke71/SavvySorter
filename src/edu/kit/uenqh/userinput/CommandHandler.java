@@ -4,14 +4,19 @@ import edu.kit.uenqh.model.SortingSystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static edu.kit.uenqh.userinput.CommandConstants.CHANGE_COMMAND_NAME;
 import static edu.kit.uenqh.userinput.CommandConstants.ERROR_PREFIX;
+import static edu.kit.uenqh.userinput.CommandConstants.LOAD_COMMAND_NAME;
 import static edu.kit.uenqh.userinput.CommandConstants.NEXT_LINE;
+import static edu.kit.uenqh.userinput.CommandConstants.QUIT_COMMAND_NAME;
+import static edu.kit.uenqh.userinput.CommandConstants.RUN_COMMAND_NAME;
 import static edu.kit.uenqh.userinput.CommandConstants.WRONG_ARGUMENTS_COUNT_FORMAT;
 
 /**
@@ -41,6 +46,7 @@ public class CommandHandler {
         this.sortingSystem = Objects.requireNonNull(sortingSystem);
         this.commands = new HashMap<>();
         this.commandsList = new ArrayList<>();
+        this.initCommands();
     }
 
     /**
@@ -93,8 +99,32 @@ public class CommandHandler {
         }
     }
 
+    private void initCommands() {
+        this.addCommand(LOAD_COMMAND_NAME, new LoadCommand());
+        this.addCommand(RUN_COMMAND_NAME, new RunCommand());
+        this.addCommand(CHANGE_COMMAND_NAME, new ChangeCommand());
+        this.addCommand(QUIT_COMMAND_NAME, new QuitCommand());
+
+        this.commandsList.sort(Comparator.naturalOrder());
+    }
+
+    private void addCommand(String commandName, Command command) {
+        this.commands.put(commandName, command);
+        this.commandsList.add(commandName);
+    }
+
+
     /**
-     * Toggles the running status of the command handler.
+     * Retrieves the list of available commands.
+     *
+     * @return the list of available commands
+     */
+    public List<String> getCommands() {
+        return this.commandsList;
+    }
+
+    /**
+     * Toggles the running status of the object.
      */
     public void toggleRunningStatus() {
         this.running = !running;
