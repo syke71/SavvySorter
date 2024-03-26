@@ -38,7 +38,6 @@ import static edu.kit.uenqh.userinput.CommandConstants.NEXT_LINE;
  * @author uenqh
  */
 public class LoadCommand implements Command {
-
     private static final int PATH_INDEX = 0;
     private static final int NUMBER_OF_ARGUMENTS = 1;
     private static final String ENTRY_SEPARATOR_REGEX = ",";
