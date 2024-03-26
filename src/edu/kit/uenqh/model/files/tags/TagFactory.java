@@ -1,11 +1,9 @@
 package edu.kit.uenqh.model.files.tags;
 
-import java.util.regex.Pattern;
 
 import static edu.kit.uenqh.model.files.FileConstants.BINARY_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.MULTI_VALUE_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.NUMERIC_TAG_NAME;
-import static edu.kit.uenqh.model.files.FileConstants.TAG_REGEX;
 
 /**
  * A factory class for creating different types of tags.

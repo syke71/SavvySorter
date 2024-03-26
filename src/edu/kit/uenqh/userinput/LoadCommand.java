@@ -248,8 +248,7 @@ public class LoadCommand implements Command {
     private boolean checkUniqueTagPerFile(List<String> tags) {
         HashSet<String> tagSet = new HashSet<>();
         for (String s : tags) {
-            s = s.toLowerCase();
-            if (!tagSet.add(s)) {
+            if (!tagSet.add(s.toLowerCase())) {
                 return false;
             }
         }
@@ -274,7 +273,7 @@ public class LoadCommand implements Command {
 
     private CommandResult checkLegalTagName(List<String> list) {
         for (String s : list) {
-            if(!Pattern.matches(TAG_REGEX, s)) {
+            if (!Pattern.matches(TAG_REGEX, s)) {
                 return new CommandResult(CommandResultType.FAILURE, String.format(ILLEGAL_TAG_NAME_FORMAT, s));
             }
         }
