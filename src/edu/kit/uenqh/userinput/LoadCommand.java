@@ -88,11 +88,12 @@ public class LoadCommand implements Command {
         } catch (InvalidFileTypeException e) {
             return new CommandResult(CommandResultType.FAILURE, e.getMessage());
         }
-        HashSet<Tag> tags = createUniqueTagSet(files);
-        int id = model.getFileRecords().size();
 
-        FileRecord fileRecord = FileHandler.formattedFileRecord(new FileRecord(files, tags, id));
-        model.getFileRecords().add(fileRecord);
+        files = new ArrayList<>(FileHandler.formattedFileRecord(files));
+        int id = model.getFileRecords().size();
+        HashSet<Tag> tags = createUniqueTagSet(files);
+        model.getFileRecords().add(new FileRecord(files, tags, id));
+
         String message = String.format(LOADED_SUCCESSFULLY_FORMAT, commandArguments[PATH_INDEX], id);
         return new CommandResult(CommandResultType.SUCCESS, appendEntries(message, entries));
     }

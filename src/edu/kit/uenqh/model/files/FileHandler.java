@@ -53,29 +53,29 @@ public class FileHandler {
     /**
      * Formats a file record.
      *
-     * @param fileRecord the file record to be formatted
+     * @param files the files to be formatted
      * @return the formatted file record
      */
-    public static FileRecord formattedFileRecord(FileRecord fileRecord) {
-        for (int i = 0; i < fileRecord.files().size(); i++) {
-            if (fileRecord.files().get(i) instanceof AudioFile) {
+    public static List<File> formattedFileRecord(List<File> files) {
+        for (int i = 0; i < files.size(); i++) {
+            if (files.get(i) instanceof AudioFile) {
                 // Handle audio file
-                fileRecord.files().set(i, handleAudioFile(fileRecord.files().get(i)));
-            } else if (fileRecord.files().get(i) instanceof ImageFile) {
+                files.set(i, handleAudioFile(files.get(i)));
+            } else if (files.get(i) instanceof ImageFile) {
                 // Handle image file
-                fileRecord.files().set(i, handleImageFile(fileRecord.files().get(i)));
-            } else if (fileRecord.files().get(i) instanceof ProgramFile) {
+                files.set(i, handleImageFile(files.get(i)));
+            } else if (files.get(i) instanceof ProgramFile) {
                 // Handle program file
-                fileRecord.files().set(i, handleProgramFile(fileRecord.files().get(i)));
-            } else if (fileRecord.files().get(i) instanceof TextFile) {
+                files.set(i, handleProgramFile(files.get(i)));
+            } else if (files.get(i) instanceof TextFile) {
                 // Handle text file
-                fileRecord.files().set(i, handleTextFile(fileRecord.files().get(i)));
-            } else if (fileRecord.files().get(i) instanceof VideoFile) {
+                files.set(i, handleTextFile(files.get(i)));
+            } else if (files.get(i) instanceof VideoFile) {
                 // Handle video file
-                fileRecord.files().set(i, handleVideoFile(fileRecord.files().get(i)));
+                files.set(i, handleVideoFile(files.get(i)));
             }
         }
-        return fileRecord;
+        return files;
     }
 
     private static File handleImageFile(File file) {

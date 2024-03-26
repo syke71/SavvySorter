@@ -1,6 +1,4 @@
-lol,program,56,fun=notreally
-memes/two_buttons,image,20,fun=decent
-memes/burning_house_girl,image,55,fun=alot
-r/kait,text,250,fun=alot
-notes/proggen,text,100,fun=decent
-notes/gbi,text,89,fun=notreally
+meme_compilation_81732.mp4,video,5,length=180
+redcode_tutorial.avi,video,5,length=1000
+la_1_lecture_1.mp4,video,5,length=5000
+movie_marathon.mp4,video,5,length=43560
