@@ -20,7 +20,6 @@ public final class SavvySorter {
      * Private constructor to prevent instantiation.
      */
     private SavvySorter() {
-
     }
 
     /**
@@ -42,7 +41,7 @@ public final class SavvySorter {
      * Checks if the provided arguments are legal.
      *
      * @param args The command-line arguments.
-     * @return true if the arguments are legal; otherwise, false.
+     * @return true if the arguments are legal; otherwise, returns false.
      */
     private static boolean checkLegalArguments(String[] args) {
         return args.length == LEGAL_ARGS_LENGTH;
