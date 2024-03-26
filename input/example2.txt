@@ -1,1 +1,6 @@
-hm_2_solution.txt,text,20,textlength,words=10
+lol,program,56,fun=notreally
+memes/two_buttons,image,20,fun=decent
+memes/burning_house_girl,image,55,fun=alot
+r/kait,text,250,fun=alot
+notes/proggen,text,100,fun=decent
+notes/gbi,text,89,fun=notreally

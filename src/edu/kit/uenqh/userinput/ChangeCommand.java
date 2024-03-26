@@ -18,7 +18,7 @@ public class ChangeCommand implements Command {
     private static final int ID_INDEX = 0;
     private static final int FILE_IDENTIFIER_INDEX = 1;
     private static final int TOTAL_ACCESS_AMOUNT_INDEX = 2;
-    private static final int MIN_CHANGE_ACCESS_AMOUNT = 0;
+    private static final int MIN_CHANGEABLE_ACCESS_AMOUNT = 0;
 
     // return messages
     private static final String INVALID_COMMAND_MESSAGE = "the entered command is invalid! This commands format is: ";
@@ -50,7 +50,7 @@ public class ChangeCommand implements Command {
         int accessAmount = Integer.parseInt(commandArguments[TOTAL_ACCESS_AMOUNT_INDEX]);
         if (!checkLegalAccessAmount(accessAmount)) {
             return new CommandResult(CommandResultType.FAILURE,
-                INVALID_ACCESS_AMOUNT_FORMAT.formatted(accessAmount, MIN_CHANGE_ACCESS_AMOUNT));
+                INVALID_ACCESS_AMOUNT_FORMAT.formatted(accessAmount, MIN_CHANGEABLE_ACCESS_AMOUNT));
         }
         FileRecord fileRecord = model.getFileRecordById(id);
         String identifier = commandArguments[FILE_IDENTIFIER_INDEX];
@@ -94,7 +94,7 @@ public class ChangeCommand implements Command {
     }
 
     private boolean checkLegalAccessAmount(int accessAmount) {
-        return accessAmount >= MIN_CHANGE_ACCESS_AMOUNT;
+        return accessAmount >= MIN_CHANGEABLE_ACCESS_AMOUNT;
     }
 
     private boolean checkFileExists(FileRecord fileRecord, String identifier) {

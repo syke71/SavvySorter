@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Provides methods for calculating information theory metrics and creating file trees.
@@ -159,7 +160,14 @@ public final class InformationTheory {
      */
     public static TreeNode createFileTree(Map<String, ArrayList<Tag>> tagByName, ArrayList<File> files) {
         Map<String, Double> informationGain = calculateInformationGain(tagByName, files);
-        double max = Collections.max(informationGain.values());
+        double max;
+        try {
+            max = Collections.max(informationGain.values());
+        } catch (NoSuchElementException e) {
+            max = 0;
+        }
+
+
         String filterTag = "";
         for (String s : informationGain.keySet()) {
             if (informationGain.get(s) == max) {
@@ -176,20 +184,25 @@ public final class InformationTheory {
         }
         filteredTagByName.remove(filterTag);
         // continue recursion
-        if (max >= MIN_VALUE_FOR_RECURSION) {
+        if (max >= MIN_VALUE_FOR_RECURSION && max != 1) {
             // create new children using filtered lists
             for (Tag t : tagByName.get(filterTag)) {
                 filteredFiles.removeAll(filterFilesByTag(t, files));
+                if (filteredTagByName.isEmpty()) {
+                    int i = 0;
+                }
                 TreeNode child = createFileTree(filteredTagByName, filterFilesByTag(t, files));
                 child.setConnectingEdge(t.getValue());
                 child.setProbability(calculateProbability(filterFilesByTag(t, files), files));
                 children.add(child);
             }
             // create new child for "undefined" tag
-            TreeNode child = createFileTree(filteredTagByName, filteredFiles);
-            child.setConnectingEdge(String.valueOf(BinaryTagType.UNDEFINED).toLowerCase());
-            child.setProbability(calculateProbability(filteredFiles, files));
-            children.add(child);
+            if (!filteredFiles.isEmpty()) {
+                TreeNode child = createFileTree(filteredTagByName, filteredFiles);
+                child.setConnectingEdge(String.valueOf(BinaryTagType.UNDEFINED).toLowerCase());
+                child.setProbability(calculateProbability(filteredFiles, files));
+                children.add(child);
+            }
         } else {
             // create TreeNode<String> using a file
             return new TreeNode(filteredFiles);
