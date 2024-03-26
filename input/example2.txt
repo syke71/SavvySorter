@@ -1,4 +1,5 @@
-code_editor,program,20
-webbrowser,program,20
-background_music,audio,20
-motivational_meme,image,20
+code_editor,program,20,coding
+git_commands,text,20,coding
+uni/bachelor_thesis,text,56
+uni/algo_cheatsheet,text,4
+uni/mima_simulator,program,5

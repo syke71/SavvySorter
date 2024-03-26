@@ -172,6 +172,7 @@ public class TreeNode {
                 builder.append(NEXT_LINE);
             }
         }
+        node.children.sort(Comparator.comparing(TreeNode::getConnectingEdge).reversed());
         for (TreeNode child : node.getChildren()) {
             if (!child.getChildren().isEmpty()) {
                 StringBuilder newPath = new StringBuilder();
