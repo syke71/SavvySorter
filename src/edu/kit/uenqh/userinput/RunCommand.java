@@ -57,7 +57,6 @@ public class RunCommand implements Command {
         }
 
         TreeNode root = InformationTheory.createFileTree(tagByName, fileRecord.files());
-        int i = 0;
         System.out.println(root.toString());
 
         return new CommandResult(CommandResultType.SUCCESS, SUCCESSFUL_RUN_MESSAGE);

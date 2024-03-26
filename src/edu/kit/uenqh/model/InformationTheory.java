@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 /**
  * Provides methods for calculating information theory metrics and creating file trees.
@@ -161,12 +160,11 @@ public final class InformationTheory {
     public static TreeNode createFileTree(Map<String, ArrayList<Tag>> tagByName, ArrayList<File> files) {
         Map<String, Double> informationGain = calculateInformationGain(tagByName, files);
         double max;
-        try {
-            max = Collections.max(informationGain.values());
-        } catch (NoSuchElementException e) {
+        if (informationGain.isEmpty()) {
             max = 0;
+        } else {
+            max = Collections.max(informationGain.values());
         }
-
 
         String filterTag = "";
         for (String s : informationGain.keySet()) {
@@ -188,9 +186,6 @@ public final class InformationTheory {
             // create new children using filtered lists
             for (Tag t : tagByName.get(filterTag)) {
                 filteredFiles.removeAll(filterFilesByTag(t, files));
-                if (filteredTagByName.isEmpty()) {
-                    int i = 0;
-                }
                 TreeNode child = createFileTree(filteredTagByName, filterFilesByTag(t, files));
                 child.setConnectingEdge(t.getValue());
                 child.setProbability(calculateProbability(filterFilesByTag(t, files), files));
