@@ -22,11 +22,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static edu.kit.uenqh.model.files.FileConstants.BINARY_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.MULTI_VALUE_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.NUMERIC_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.PROGRAM_FILE_NAME;
+import static edu.kit.uenqh.model.files.FileConstants.TAG_REGEX;
 import static edu.kit.uenqh.userinput.CommandConstants.MIN_ACCESS_AMOUNT;
 import static edu.kit.uenqh.userinput.CommandConstants.NEXT_LINE;
 
@@ -56,9 +58,11 @@ public class LoadCommand implements Command {
     private static final String WRONG_FILE_FORMAT = "entries within the loaded file are not formatted correctly!";
     private static final String NOT_UNIQUE_FILE_IDENTIFIER_MESSAGE = "the loaded file contains reoccurring file identifiers!";
     private static final String NOT_UNIQUE_TAG_NAMES_MESSAGE = "the loaded file contains reoccurring tags!";
-
+    private static final String MULTIPLE_TAG_ASSIGNMENT_MESSAGE = "you cannot assign the same tag multiple times to the same file!";
     private static final String IDENTIFIER_CONTAINS_ILLEGAL_CHARACTER_MESSAGE = "the loaded file contains illegal characters!";
     private static final String INVALID_ACCESS_AMOUNT_FORMAT = "the loaded file contains an invalid access amount of %s in line %s!";
+    private static final String ILLEGAL_TAG_NAME_FORMAT = "the entered tag (%s) name contains illegal characters!";
+    private static final String EMPTY_STRING = null;
 
 
     /**
@@ -93,6 +97,12 @@ public class LoadCommand implements Command {
             fileTypes[step] = splitEntry[FILE_TYPE_INDEX];
             accessAmounts[step] = Integer.parseInt(splitEntry[FILE_ACCESS_AMOUNT_INDEX]);
             List<String> list = new ArrayList<>(Arrays.asList(splitEntry).subList(TAG_START_INDEX, splitEntry.length));
+            if (!checkUniqueTagPerFile(list)) {
+                return new CommandResult(CommandResultType.FAILURE, MULTIPLE_TAG_ASSIGNMENT_MESSAGE);
+            }
+            if (checkLegalTagName(list).getType().equals(CommandResultType.FAILURE)) {
+                return checkLegalTagName(list);
+            }
             tagMap.put(fileIdentifiers[step], list);
             step++;
         }
@@ -185,7 +195,7 @@ public class LoadCommand implements Command {
         return true;
     }
 
-    private Tag createTag(String tag) {
+    private Tag createTag(String tag) throws InvalidFileTypeException {
         Tag newTag;
         String name;
         String value;
@@ -235,6 +245,17 @@ public class LoadCommand implements Command {
         return tags;
     }
 
+    private boolean checkUniqueTagPerFile(List<String> tags) {
+        HashSet<String> tagSet = new HashSet<>();
+        for (String s : tags) {
+            s = s.toLowerCase();
+            if (!tagSet.add(s)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean checkUniqueTags(List<File> files) {
         HashMap<String, String> tagNames = new HashMap<>();
         for (File file : files) {
@@ -249,6 +270,15 @@ public class LoadCommand implements Command {
             }
         }
         return true;
+    }
+
+    private CommandResult checkLegalTagName(List<String> list) {
+        for (String s : list) {
+            if(!Pattern.matches(TAG_REGEX, s)) {
+                return new CommandResult(CommandResultType.FAILURE, String.format(ILLEGAL_TAG_NAME_FORMAT, s));
+            }
+        }
+        return new CommandResult(CommandResultType.SUCCESS, EMPTY_STRING);
     }
 
 

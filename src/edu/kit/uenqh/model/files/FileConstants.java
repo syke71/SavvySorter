@@ -53,6 +53,11 @@ public final class FileConstants {
     public static final String NUMERIC_TAG_NAME = "numeric";
 
     /**
+     * Regex for tag names.
+     */
+    public static final String TAG_REGEX = "[a-zA-Z][0-9a-zA-Z]*";
+
+    /**
      * Private constructor to prevent instantiation.
      */
     private FileConstants() {
