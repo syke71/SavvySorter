@@ -143,7 +143,7 @@ public class TreeNode {
      * @param probability The probability to set.
      */
     public void setProbability(double probability) {
-        this.probability = Double.parseDouble(String.format("%.2f", probability));
+        this.probability = Double.parseDouble(String.format(DECIMAL_FORMAT, probability));
     }
 
     /**
