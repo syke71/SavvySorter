@@ -128,6 +128,11 @@ public class TreeNode {
         return probability;
     }
 
+    /**
+     * Retrieves the path of the TreeNode.
+     *
+     * @return The path of the TreeNode.
+     */
     public String getPath() {
         return path;
     }
