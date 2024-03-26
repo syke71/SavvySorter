@@ -82,5 +82,4 @@ public class RunCommand implements Command {
     private boolean checkIfIdExists(SortingSystem model, int id) {
         return model.getFileRecordById(id) != null;
     }
-
 }

@@ -69,7 +69,6 @@ public class ChangeCommand implements Command {
         return new CommandResult(CommandResultType.SUCCESS, message);
     }
 
-
     /**
      * Retrieves the number of arguments required for the command.
      *
@@ -105,5 +104,4 @@ public class ChangeCommand implements Command {
         }
         return false;
     }
-
 }

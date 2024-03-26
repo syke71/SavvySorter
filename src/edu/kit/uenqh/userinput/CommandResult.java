@@ -1,6 +1,5 @@
 package edu.kit.uenqh.userinput;
 
-
 /**
  * This class represents the result of a command. It contains a message and a type. The type indicates whether the
  * command was successful or not. The message contains additional information about the result.

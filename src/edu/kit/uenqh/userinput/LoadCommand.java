@@ -31,6 +31,8 @@ import static edu.kit.uenqh.model.files.FileConstants.PROGRAM_FILE_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.TAG_REGEX;
 import static edu.kit.uenqh.userinput.CommandConstants.MIN_ACCESS_AMOUNT;
 import static edu.kit.uenqh.userinput.CommandConstants.NEXT_LINE;
+
+
 /**
  * A command implementation for loading files into the system.
  *
@@ -62,8 +64,9 @@ public class LoadCommand implements Command {
     private static final String ILLEGAL_TAG_NAME_FORMAT = "the entered tag (%s) name contains illegal characters!";
     private static final String INVALID_TAG_TYPE_MESSAGE = "the entered tag contains an invalid tag type!";
     private static final String EMPTY_STRING = null;
+
     /**
-     * Executes the load command, which reads a file containing information about files to be loaded into the system,
+     * Executes the load command, which reads a .txt file containing information about files to be loaded into the system,
      * creates corresponding File objects, and adds them to the system.
      *
      * @param model            The SortingSystem object representing the system where files will be loaded.
@@ -97,6 +100,7 @@ public class LoadCommand implements Command {
         String message = String.format(LOADED_SUCCESSFULLY_FORMAT, commandArguments[PATH_INDEX], id);
         return new CommandResult(CommandResultType.SUCCESS, appendEntries(message, entries));
     }
+
     /**
      * Retrieves the number of arguments required for the load command.
      *
@@ -106,12 +110,14 @@ public class LoadCommand implements Command {
     public int getNumberOfArguments() {
         return NUMBER_OF_ARGUMENTS;
     }
+
     private CommandResult checkLegalArguments(String path) {
         if (!Files.exists(Paths.get(path))) {
             return new CommandResult(CommandResultType.FAILURE, String.format(FILE_DOES_NOT_EXIST_FORMAT, path));
         }
         return new CommandResult(CommandResultType.SUCCESS, EMPTY_STRING);
     }
+
     private CommandResult checkLegalFiles(String path) {
         List<String> entries = readFile(path);
         if (entries == null || entries.isEmpty()) {
@@ -146,6 +152,7 @@ public class LoadCommand implements Command {
         }
         return new CommandResult(CommandResultType.SUCCESS, EMPTY_STRING);
     }
+
     // File checks
     private boolean checkLegalFileFormat(List<String> entries) {
         for (String s : entries) {
@@ -155,6 +162,7 @@ public class LoadCommand implements Command {
         }
         return true;
     }
+
     private boolean checkLegalFileFormat(String entry) {
         String[] splitEntry = entry.split(ENTRY_SEPARATOR_REGEX);
         if (splitEntry.length < MIN_ENTRY_ARRAY_LENGTH) {
@@ -167,6 +175,7 @@ public class LoadCommand implements Command {
         }
         return true;
     }
+
     private int[] createAccessAmounts(List<String> entries) {
         int[] accessAmounts = new int[entries.size()];
         for (int i = 0; i < accessAmounts.length; i++) {
@@ -175,6 +184,7 @@ public class LoadCommand implements Command {
         }
         return accessAmounts;
     }
+
     private CommandResult checkLegalAccessAmount(List<String> entries) {
         int[] accessAmount = createAccessAmounts(entries);
         for (int i = 0; i < accessAmount.length; i++) {
@@ -184,6 +194,7 @@ public class LoadCommand implements Command {
         }
         return new CommandResult(CommandResultType.SUCCESS, EMPTY_STRING);
     }
+
     private List<String> readFile(String path) {
         List<String> entries;
         try {
@@ -193,6 +204,7 @@ public class LoadCommand implements Command {
         }
         return entries;
     }
+
     private ArrayList<File> createFiles(List<String> entries) throws InvalidFileTypeException {
         ArrayList<File> files = new ArrayList<>();
         String[] fileIdentifiers = new String[entries.size()];
@@ -223,6 +235,7 @@ public class LoadCommand implements Command {
         }
         return files;
     }
+
     private String[] createFileIdentifiers(List<String> entries) {
         String[] fileIdentifiers = new String[entries.size()];
         for (int i = 0; i < fileIdentifiers.length; i++) {
@@ -231,6 +244,7 @@ public class LoadCommand implements Command {
         }
         return fileIdentifiers;
     }
+
     private boolean checkLegalFileIdentifiers(List<String> entries) {
         String[] fileIdentifiers = createFileIdentifiers(entries);
         for (String s : fileIdentifiers) {
@@ -240,6 +254,7 @@ public class LoadCommand implements Command {
         }
         return true;
     }
+
     private boolean checkUniqueFileIdentifiers(List<String> entries) {
         String[] fileIdentifiers = createFileIdentifiers(entries);
         Set<String> uniqueIdentifiers = new HashSet<>();
@@ -250,6 +265,7 @@ public class LoadCommand implements Command {
         }
         return true;
     }
+
     // Tag checks
     private CommandResult checkLegalTagFormat(List<String> entries) {
         for (String s : entries) {
@@ -269,6 +285,7 @@ public class LoadCommand implements Command {
         }
         return new CommandResult(CommandResultType.SUCCESS, EMPTY_STRING);
     }
+
     private CommandResult checkLegalTagName(String[] tags) {
         for (String s : tags) {
             if (!Pattern.matches(TAG_REGEX, s)) {
@@ -277,6 +294,7 @@ public class LoadCommand implements Command {
         }
         return new CommandResult(CommandResultType.SUCCESS, EMPTY_STRING);
     }
+
     private String[] createTagNameArray(String[] tags) {
         String[] tagNames = new String[tags.length];
         for (int i = 0; i < tags.length; i++) {
@@ -288,6 +306,7 @@ public class LoadCommand implements Command {
         }
         return tagNames;
     }
+
     private List<Tag> createTags(List<String> entries) {
         List<Tag> tags = new ArrayList<>();
         for (String s : entries) {
@@ -299,6 +318,7 @@ public class LoadCommand implements Command {
         }
         return tags;
     }
+
     private Tag createTag(String tag) {
         Tag newTag;
         String name;
@@ -319,6 +339,7 @@ public class LoadCommand implements Command {
         }
         return newTag;
     }
+
     private boolean checkTagCreation(List<Tag> tags) {
         for (Tag tag : tags) {
             if (tag == null) {
@@ -327,6 +348,7 @@ public class LoadCommand implements Command {
         }
         return true;
     }
+
     private boolean checkUniqueTags(List<Tag> tags) {
         HashMap<String, String> tagNames = new HashMap<>();
         for (Tag tag : tags) {
@@ -340,6 +362,7 @@ public class LoadCommand implements Command {
         }
         return true;
     }
+
     private boolean checkUniqueTagPerFiles(List<File> files) {
         for (File file : files) {
             HashSet<String> tagSet = new HashSet<>();
@@ -351,6 +374,7 @@ public class LoadCommand implements Command {
         }
         return true;
     }
+
     private HashSet<Tag> createUniqueTagSet(List<File> files) {
         HashSet<Tag> tags = new HashSet<>();
         for (File file : files) {
@@ -358,9 +382,11 @@ public class LoadCommand implements Command {
         }
         return tags;
     }
+
     private Tag createExecutableTag() {
         return new BinaryTag(EXECUTABLE_TAG_NAME, BinaryTagType.DEFINED);
     }
+
     private String appendEntries(String message, List<String> entries) {
         StringBuilder output = new StringBuilder();
         output.append(message);

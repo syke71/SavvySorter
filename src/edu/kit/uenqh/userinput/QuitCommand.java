@@ -2,6 +2,7 @@ package edu.kit.uenqh.userinput;
 
 import edu.kit.uenqh.model.SortingSystem;
 
+
 /**
  * Represents a command to quit the program immediately.
  *
@@ -10,7 +11,6 @@ import edu.kit.uenqh.model.SortingSystem;
 public class QuitCommand implements Command {
     private static final String QUIT_MESSAGE = null;
     private static final int NUMBER_OF_ARGUMENTS = 0;
-
 
     /**
      * Executes the command to quit the program.
@@ -21,7 +21,7 @@ public class QuitCommand implements Command {
      */
     @Override
     public CommandResult execute(SortingSystem model, String[] commandArguments) {
-        model.getCommandHandler().toggleRunningStatus();
+        model.getCommandHandler().quit();
         return new CommandResult(CommandResultType.SUCCESS, QUIT_MESSAGE);
     }
 

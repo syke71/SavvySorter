@@ -11,7 +11,7 @@ import java.util.List;
 import static edu.kit.uenqh.model.files.FileConstants.MULTI_VALUE_TAG_NAME;
 
 /**
- * Handles file-related operations such as formatting file records and tag conversions.
+ * Handles file-related operations such as formatting file lists and tag conversions.
  *
  * @author uenqh
  */
@@ -38,10 +38,10 @@ public final class FileHandler {
     }
 
     /**
-     * Formats a files.
+     * Formats a file list.
      *
      * @param files the files to be formatted
-     * @return the formatted file record
+     * @return the formatted file list
      */
     public static List<File> formattedFileRecord(List<File> files) {
         for (int i = 0; i < files.size(); i++) {

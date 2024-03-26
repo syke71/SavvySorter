@@ -2,11 +2,8 @@ package edu.kit.uenqh.userinput;
 
 import edu.kit.uenqh.model.SortingSystem;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
@@ -17,7 +14,7 @@ import static edu.kit.uenqh.userinput.CommandConstants.LOAD_COMMAND_NAME;
 import static edu.kit.uenqh.userinput.CommandConstants.NEXT_LINE;
 import static edu.kit.uenqh.userinput.CommandConstants.QUIT_COMMAND_NAME;
 import static edu.kit.uenqh.userinput.CommandConstants.RUN_COMMAND_NAME;
-import static edu.kit.uenqh.userinput.CommandConstants.WRONG_ARGUMENTS_COUNT_FORMAT;
+import static edu.kit.uenqh.userinput.CommandConstants.INVALID_ARGUMENTS_COUNT_FORMAT;
 
 /**
  * This class handles the user input and executes the commands.
@@ -32,10 +29,7 @@ public class CommandHandler {
 
     private final SortingSystem sortingSystem;
     private final Map<String, Command> commands;
-    private final List<String> commandsList;
     private boolean running = false;
-
-
 
     /**
      * Constructs a new CommandHandler.
@@ -45,7 +39,6 @@ public class CommandHandler {
     public CommandHandler(SortingSystem sortingSystem) {
         this.sortingSystem = Objects.requireNonNull(sortingSystem);
         this.commands = new HashMap<>();
-        this.commandsList = new ArrayList<>();
         this.initCommands();
     }
 
@@ -69,7 +62,6 @@ public class CommandHandler {
         this.running = false;
     }
 
-
     private void executeCommand(String commandWithArguments) {
         String[] splitCommand = commandWithArguments.trim().split(COMMAND_SEPARATOR_REGEX);
         String commandName = splitCommand[0];
@@ -82,7 +74,7 @@ public class CommandHandler {
         if (!commands.containsKey(commandName)) {
             System.err.printf(ERROR_PREFIX + COMMAND_NOT_FOUND_FORMAT + NEXT_LINE, commandName);
         } else if (commands.get(commandName).getNumberOfArguments() != commandArguments.length) {
-            System.err.printf(ERROR_PREFIX + WRONG_ARGUMENTS_COUNT_FORMAT + NEXT_LINE, commandName);
+            System.err.printf(ERROR_PREFIX + INVALID_ARGUMENTS_COUNT_FORMAT + NEXT_LINE, commandName);
         } else {
             CommandResult result = commands.get(commandName).execute(sortingSystem, commandArguments);
             String output = switch (result.getType()) {
@@ -104,30 +96,9 @@ public class CommandHandler {
         this.addCommand(RUN_COMMAND_NAME, new RunCommand());
         this.addCommand(CHANGE_COMMAND_NAME, new ChangeCommand());
         this.addCommand(QUIT_COMMAND_NAME, new QuitCommand());
-
-        this.commandsList.sort(Comparator.naturalOrder());
     }
 
     private void addCommand(String commandName, Command command) {
         this.commands.put(commandName, command);
-        this.commandsList.add(commandName);
     }
-
-
-    /**
-     * Retrieves the list of available commands.
-     *
-     * @return the list of available commands
-     */
-    public List<String> getCommands() {
-        return this.commandsList;
-    }
-
-    /**
-     * Toggles the running status of the object.
-     */
-    public void toggleRunningStatus() {
-        this.running = !running;
-    }
-
 }
