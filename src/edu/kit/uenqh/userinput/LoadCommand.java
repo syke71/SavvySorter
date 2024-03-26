@@ -325,7 +325,7 @@ public class LoadCommand implements Command {
         String value;
         if (tag.contains(MULTI_VALUE_TAG_SPLIT_SYMBOL)) {
             String[] splitTag = tag.trim().split(MULTI_VALUE_TAG_SPLIT_SYMBOL);
-            name = splitTag[MULTI_VALUE_TAG_NAME_INDEX];
+            name = splitTag[MULTI_VALUE_TAG_NAME_INDEX].toLowerCase();
             value = splitTag[MULTI_VALUE_TAG_VALUE_INDEX];
             try {
                 Integer.parseInt(splitTag[MULTI_VALUE_TAG_VALUE_INDEX]);
@@ -334,7 +334,7 @@ public class LoadCommand implements Command {
                 newTag = TagFactory.createTag(MULTI_VALUE_TAG_NAME, name, value);
             }
         } else {
-            name = tag;
+            name = tag.toLowerCase();
             newTag = TagFactory.createTag(BINARY_TAG_NAME, name, String.valueOf(BinaryTagType.DEFINED));
         }
         return newTag;
