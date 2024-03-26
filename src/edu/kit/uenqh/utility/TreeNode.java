@@ -172,7 +172,7 @@ public class TreeNode {
                 builder.append(NEXT_LINE);
             }
         }
-        node.children.sort(Comparator.comparing(TreeNode::getProbability).reversed());
+        node.children.sort(Comparator.comparing(TreeNode::getProbability).reversed().thenComparing(TreeNode::getIdentifier));
         for (TreeNode child : node.getChildren()) {
             if (!child.getChildren().isEmpty()) {
                 StringBuilder newPath = new StringBuilder();

@@ -1,5 +1,5 @@
-code_editor,program,30,lastAccessed=now
-documents/final_exercise_1_task.pdf,text,60,lastaccessed=yesterday
-documents/final_exercise_2_task.pdf,text,20,LastAccessed=now
-images/spongebob_meme.png,image,39,LaStAcCeSsEd=lastweek
-downloads/2fa_backup_codes.txt,text,1,LASTaccessed=never
+code_editor,program,20,coding
+git_commands,text,20,coding
+uni/bachelor_thesis,text,56
+uni/algo_cheatsheet,text,4
+uni/mima_simulator,program,5
