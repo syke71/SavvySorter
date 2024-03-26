@@ -1,9 +1,0 @@
-%> java TediousTidy
-Use one of the following commands: load <path>, run <id>, change <id> <file> <number>, quit
-> load foo/bar.error
-ERROR: File bar.error does not exist!
-> run 0
-ERROR: No file was loaded!
-> load input/empty.txt
-ERROR: File empty.txt is empty!
-> quit

@@ -44,6 +44,7 @@ public class LoadCommand implements Command {
     private static final int FILE_TYPE_INDEX = 1;
     private static final int FILE_ACCESS_AMOUNT_INDEX = 2;
     private static final int TAG_START_INDEX = 3;
+    private static final int MIN_ENTRY_ARRAY_LENGTH = 3;
     private static final String CATEGORICAL_TAG_SPLIT_SYMBOL = "=";
     private static final int CATEGORICAL_TAG_NAME_INDEX = 0;
     private static final int CATEGORICAL_TAG_VALUE_INDEX = 1;
@@ -159,6 +160,9 @@ public class LoadCommand implements Command {
 
     private boolean checkLegalFileFormat(SortingSystem model, String entry) {
         String[] splitEntry = entry.trim().split(COMMAND_SEPARATOR_REGEX);
+        if (splitEntry.length < MIN_ENTRY_ARRAY_LENGTH) {
+            return false;
+        }
         try {
             Integer.parseInt(splitEntry[FILE_ACCESS_AMOUNT_INDEX]);
         } catch (NumberFormatException e) {
