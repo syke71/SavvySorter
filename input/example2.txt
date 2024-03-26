@@ -1,4 +1,4 @@
-meme_compilation_81732.mp4,video,5,length=180
-redcode_tutorial.avi,video,5,length=1000
-la_1_lecture_1.mp4,video,5,length=5000
-movie_marathon.mp4,video,5,length=43560
+code_editor,program,20
+webbrowser,program,20
+background_music,audio,20
+motivational_meme,image,20

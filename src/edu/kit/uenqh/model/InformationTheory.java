@@ -182,7 +182,7 @@ public final class InformationTheory {
         }
         filteredTagByName.remove(filterTag);
         // continue recursion
-        if (max >= MIN_VALUE_FOR_RECURSION && max != 1) {
+        if (max >= MIN_VALUE_FOR_RECURSION) {
             // create new children using filtered lists
             for (Tag t : tagByName.get(filterTag)) {
                 filteredFiles.removeAll(filterFilesByTag(t, files));
