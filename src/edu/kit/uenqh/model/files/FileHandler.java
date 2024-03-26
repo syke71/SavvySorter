@@ -166,10 +166,10 @@ public class FileHandler {
             if (tagNames.contains(NUMERIC_LENGTH_TAG_NAME.toLowerCase()) && tagNames.contains(AUDIO_LENGTH_TAG_NAME.toLowerCase())) {
                 message = String.format(COLLIDING_TAGS_FORMAT, NUMERIC_LENGTH_TAG_NAME, AUDIO_LENGTH_TAG_NAME);
             }
-            if (tagNames.contains(NUMERIC_LENGTH_TAG_NAME.toLowerCase()) && tagNames.contains(VIDEO_LENGTH_TAG_NAME)) {
+            if (tagNames.contains(NUMERIC_LENGTH_TAG_NAME.toLowerCase()) && tagNames.contains(VIDEO_LENGTH_TAG_NAME.toLowerCase())) {
                 message = String.format(COLLIDING_TAGS_FORMAT, NUMERIC_LENGTH_TAG_NAME, VIDEO_LENGTH_TAG_NAME);
             }
-            if (tagNames.contains(WORDS_TAG_NAME.toLowerCase()) && tagNames.contains(TEXT_LENGTH_TAG_NAME)) {
+            if (tagNames.contains(WORDS_TAG_NAME.toLowerCase()) && tagNames.contains(TEXT_LENGTH_TAG_NAME.toLowerCase())) {
                 message = String.format(COLLIDING_TAGS_FORMAT, WORDS_TAG_NAME, TEXT_LENGTH_TAG_NAME);
             }
             if (!message.isEmpty()) {
@@ -178,8 +178,4 @@ public class FileHandler {
         }
         return message;
     }
-
-
-
-
 }
