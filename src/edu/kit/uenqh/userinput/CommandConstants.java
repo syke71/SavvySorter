@@ -10,7 +10,7 @@ public final class CommandConstants {
     /**
      * The minimum access amount allowed for a file.
      */
-    public static final int MIN_ACCESS_AMOUNT = 1;
+    public static final int MIN_ACCESS_AMOUNT = 0;
 
     // Command names
     /**
