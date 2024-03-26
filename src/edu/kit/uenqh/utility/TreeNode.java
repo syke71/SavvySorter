@@ -143,7 +143,7 @@ public class TreeNode {
      * @param probability The probability to set.
      */
     public void setProbability(double probability) {
-        this.probability = probability;
+        this.probability = Double.parseDouble(String.format("%.2f", probability));
     }
 
     /**
@@ -172,7 +172,7 @@ public class TreeNode {
                 builder.append(NEXT_LINE);
             }
         }
-        node.children.sort(Comparator.comparing(TreeNode::getProbability).reversed().thenComparing(TreeNode::getIdentifier));
+        node.children.sort(Comparator.comparing(TreeNode::getProbability, Comparator.reverseOrder()));
         for (TreeNode child : node.getChildren()) {
             if (!child.getChildren().isEmpty()) {
                 StringBuilder newPath = new StringBuilder();
@@ -222,8 +222,9 @@ public class TreeNode {
         // Convert HashMap to List of Map Entries
         List<Map.Entry<String, Double>> list = new ArrayList<>(map.entrySet());
 
-        // Sort the list based on double values
-        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        // Sort the list based on double values, and then by keys lexicographically
+        list.sort(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder())
+            .thenComparing(Map.Entry.comparingByKey()));
 
         // Create a new LinkedHashMap to preserve the insertion order
         LinkedHashMap<String, Double> sortedMap = new LinkedHashMap<>();
