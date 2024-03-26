@@ -2,7 +2,6 @@ package edu.kit.uenqh.utility;
 
 import edu.kit.uenqh.model.files.File;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,7 +21,7 @@ public class TreeNode {
     private static final String NEXT_LINE = "\n";
     private static final String EMPTY_STRING = "";
     private static final String TAG_CONNECTOR = "=";
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#0.00");
+    private static final String DECIMAL_FORMAT = "%.2f";
     private final String identifier;
     private final HashMap<String, Double> informationGain;
     private String connectingEdge;
@@ -155,7 +154,7 @@ public class TreeNode {
                 builder.append(PREFIX);
                 builder.append(s.toLowerCase());
                 builder.append(TAG_CONNECTOR);
-                builder.append(DECIMAL_FORMAT.format(node.getInformationGain().get(s)));
+                builder.append(String.format(DECIMAL_FORMAT, node.getInformationGain().get(s)));
                 builder.append(NEXT_LINE);
             }
         }
