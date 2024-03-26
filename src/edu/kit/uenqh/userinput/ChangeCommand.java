@@ -26,7 +26,7 @@ public class ChangeCommand implements Command {
     private static final String INVALID_ID_FORMAT = "the entered id (%s) does not exist!";
     private static final String INVALID_ACCESS_AMOUNT_FORMAT = "the entered number (%s) must be at least %s!";
     private static final String INVALID_FILE_FORMAT = "the entered file name (%s) does not exist!";
-    private static final String SUCCESSFUL_CHANGE_FORMAT = "Change <%s> to <%s> for <%s>";
+    private static final String SUCCESSFUL_CHANGE_FORMAT = "Change %s to %s for %s";
 
     /**
      * Executes the command to change the access amount of a file.
