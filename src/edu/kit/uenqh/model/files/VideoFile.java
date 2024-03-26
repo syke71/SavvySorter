@@ -8,13 +8,13 @@ package edu.kit.uenqh.model.files;
 public class VideoFile extends File {
     private static final String ILLEGAL_LENGTH = null;
     private static final int CLIP_MIN_LENGTH = 0;
-    private static final String CLIP_NAME = "Clip";
+    private static final String CLIP_NAME = "clip";
     private static final int SHORT_MIN_LENGTH = 300;
-    private static final String SHORT_NAME = "Short";
+    private static final String SHORT_NAME = "short";
     private static final int MOVIE_MIN_LENGTH = 3600;
-    private static final String MOVIE_NAME = "Movie";
+    private static final String MOVIE_NAME = "movie";
     private static final int LONG_MIN_LENGTH = 7200;
-    private static final String LONG_NAME = "Long";
+    private static final String LONG_NAME = "long";
 
     /**
      * Constructs a new VideoFile object with the given identifier and access amount.

@@ -8,11 +8,11 @@ package edu.kit.uenqh.model.files;
 public class TextFile extends File {
     private static final String ILLEGAL_LENGTH = null;
     private static final int SHORT_MIN_LENGTH = 0;
-    private static final String SHORT_NAME = "Short";
+    private static final String SHORT_NAME = "short";
     private static final int MEDIUM_MIN_LENGTH = 100;
-    private static final String MEDIUM_NAME = "Medium";
+    private static final String MEDIUM_NAME = "medium";
     private static final int LONG_MIN_LENGTH = 1000;
-    private static final String LONG_NAME = "Long";
+    private static final String LONG_NAME = "long";
 
     /**
      * Constructs a new TextFile with the given identifier and access amount.

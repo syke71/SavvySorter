@@ -8,13 +8,13 @@ package edu.kit.uenqh.model.files;
 public class ImageFile extends File {
     private static final String ILLEGAL_SIZE = null;
     private static final int ICON_MIN_SIZE = 0;
-    private static final String ICON_NAME = "Icon";
+    private static final String ICON_NAME = "icon";
     private static final int SMALL_MIN_SIZE = 10000;
-    private static final String SMALL_NAME = "Small";
+    private static final String SMALL_NAME = "small";
     private static final int MEDIUM_MIN_SIZE = 40000;
-    private static final String MEDIUM_NAME = "Medium";
+    private static final String MEDIUM_NAME = "medium";
     private static final int LARGE_MIN_SIZE = 800000;
-    private static final String LARGE_NAME = "Large";
+    private static final String LARGE_NAME = "large";
 
     /**
      * Constructs an ImageFile with the given identifier and access amount.

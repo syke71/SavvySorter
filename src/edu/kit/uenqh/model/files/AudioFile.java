@@ -9,13 +9,13 @@ package edu.kit.uenqh.model.files;
 public class AudioFile extends File {
     private static final String ILLEGAL_LENGTH = null;
     private static final int SAMPLE_MIN_LENGTH = 0;
-    private static final String SAMPLE_NAME = "Sample";
+    private static final String SAMPLE_NAME = "sample";
     private static final int SHORT_MIN_LENGTH = 10;
-    private static final String SHORT_NAME = "Short";
+    private static final String SHORT_NAME = "short";
     private static final int NORMAL_MIN_LENGTH = 60;
-    private static final String NORMAL_NAME = "Normal";
+    private static final String NORMAL_NAME = "normal";
     private static final int LONG_MIN_LENGTH = 300;
-    private static final String LONG_NAME = "Long";
+    private static final String LONG_NAME = "long";
 
     /**
      * Creates an AudioFile object with the given identifier and access amount.
