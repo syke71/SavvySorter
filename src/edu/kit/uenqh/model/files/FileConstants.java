@@ -8,8 +8,6 @@ package edu.kit.uenqh.model.files;
 public final class FileConstants {
 
     // File information
-
-
     /**
      * Name of an audio file.
      */
@@ -35,7 +33,6 @@ public final class FileConstants {
      */
     public static final String VIDEO_FILE_NAME = "video";
 
-
     // Tag information
     /**
      * Name of a binary tag.
@@ -56,6 +53,7 @@ public final class FileConstants {
      * Regex for tag names.
      */
     public static final String TAG_REGEX = "[a-zA-Z][0-9a-zA-Z]*";
+
 
     /**
      * Private constructor to prevent instantiation.

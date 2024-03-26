@@ -31,7 +31,6 @@ import static edu.kit.uenqh.model.files.FileConstants.PROGRAM_FILE_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.TAG_REGEX;
 import static edu.kit.uenqh.userinput.CommandConstants.MIN_ACCESS_AMOUNT;
 import static edu.kit.uenqh.userinput.CommandConstants.NEXT_LINE;
-
 /**
  * A command implementation for loading files into the system.
  *
@@ -63,7 +62,6 @@ public class LoadCommand implements Command {
     private static final String ILLEGAL_TAG_NAME_FORMAT = "the entered tag (%s) name contains illegal characters!";
     private static final String INVALID_TAG_TYPE_MESSAGE = "the entered tag contains an invalid tag type!";
     private static final String EMPTY_STRING = null;
-
     /**
      * Executes the load command, which reads a file containing information about files to be loaded into the system,
      * creates corresponding File objects, and adds them to the system.
@@ -79,12 +77,10 @@ public class LoadCommand implements Command {
         if (checkLegalArguments(path).getType().equals(CommandResultType.FAILURE)) {
             return checkLegalArguments(path);
         }
-
         // Check loaded file
         if (checkLegalFiles(path).getType().equals(CommandResultType.FAILURE)) {
             return checkLegalFiles(path);
         }
-
         List<String> entries = readFile(path);
         ArrayList<File> files = new ArrayList<>();
         try {
@@ -100,7 +96,6 @@ public class LoadCommand implements Command {
         String message = String.format(LOADED_SUCCESSFULLY_FORMAT, commandArguments[PATH_INDEX], id);
         return new CommandResult(CommandResultType.SUCCESS, appendEntries(message, entries));
     }
-
     /**
      * Retrieves the number of arguments required for the load command.
      *
@@ -110,7 +105,6 @@ public class LoadCommand implements Command {
     public int getNumberOfArguments() {
         return NUMBER_OF_ARGUMENTS;
     }
-
     private CommandResult checkLegalArguments(String path) {
         if (!Files.exists(Paths.get(path))) {
             return new CommandResult(CommandResultType.FAILURE, String.format(FILE_DOES_NOT_EXIST_FORMAT, path));
@@ -119,7 +113,6 @@ public class LoadCommand implements Command {
     }
     private CommandResult checkLegalFiles(String path) {
         List<String> entries = readFile(path);
-
         if (entries == null || entries.isEmpty()) {
             return new CommandResult(CommandResultType.FAILURE, EMPTY_FILE_MESSAGE);
         }
@@ -146,6 +139,9 @@ public class LoadCommand implements Command {
         }
         if (!checkUniqueTagPerFiles(files)) {
             return new CommandResult(CommandResultType.FAILURE, NOT_UNIQUE_TAG_NAMES_MESSAGE);
+        }
+        if (!FileHandler.checkCollidingTagNames(files).isEmpty()) {
+            return new CommandResult(CommandResultType.FAILURE, FileHandler.checkCollidingTagNames(files));
         }
         return new CommandResult(CommandResultType.SUCCESS, EMPTY_STRING);
     }
@@ -345,17 +341,11 @@ public class LoadCommand implements Command {
     }
     private boolean checkUniqueTagPerFiles(List<File> files) {
         for (File file : files) {
-            if (!checkUniqueTagPerFile(file.getTags())) {
-                return false;
-            }
-        }
-        return true;
-    }
-    private boolean checkUniqueTagPerFile(List<Tag> tags) {
-        HashSet<String> tagSet = new HashSet<>();
-        for (Tag tag : tags) {
-            if (!tagSet.add(tag.getName().toLowerCase())) {
-                return false;
+            HashSet<String> tagSet = new HashSet<>();
+            for (Tag tag : file.getTags()) {
+                if (!tagSet.add(tag.getName().toLowerCase())) {
+                    return false;
+                }
             }
         }
         return true;
@@ -367,6 +357,9 @@ public class LoadCommand implements Command {
         }
         return tags;
     }
+    private Tag createExecutableTag() {
+        return new BinaryTag(EXECUTABLE_TAG_NAME, BinaryTagType.DEFINED);
+    }
     private String appendEntries(String message, List<String> entries) {
         StringBuilder output = new StringBuilder();
         output.append(message);
@@ -375,8 +368,5 @@ public class LoadCommand implements Command {
             output.append(s);
         }
         return output.toString();
-    }
-    private Tag createExecutableTag() {
-        return new BinaryTag(EXECUTABLE_TAG_NAME, BinaryTagType.DEFINED);
     }
 }
