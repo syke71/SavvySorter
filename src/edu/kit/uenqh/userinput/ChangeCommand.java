@@ -5,7 +5,6 @@ import edu.kit.uenqh.model.files.File;
 import edu.kit.uenqh.model.files.FileRecord;
 
 import static edu.kit.uenqh.userinput.CommandConstants.EMPTY_FILE_RECORD_MESSAGE;
-import static edu.kit.uenqh.userinput.CommandConstants.MIN_ACCESS_AMOUNT;
 
 /**
  * Represents a command to change the access amount of a file.
