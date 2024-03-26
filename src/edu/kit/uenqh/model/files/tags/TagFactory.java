@@ -14,7 +14,7 @@ import static edu.kit.uenqh.model.files.FileConstants.NUMERIC_TAG_NAME;
 public final class TagFactory {
     private static final String INVALID_TAG_TYPE_MESSAGE = "Invalid tag type: ";
     private static final String INVALID_TAG_NAME_FORMAT = "Invalid tag name: %s. Must have this format: %s";
-    public static final String TAG_REGEX = "[a-zA-Z][0-9a-zA-Z]*";
+    private static final String TAG_REGEX = "[a-zA-Z][0-9a-zA-Z]*";
 
     /**
      * Private constructor to prevent instantiation.
