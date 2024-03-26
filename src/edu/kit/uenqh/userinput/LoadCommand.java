@@ -107,15 +107,15 @@ public class LoadCommand implements Command {
         if (!this.checkLegalFileIdentifiers(fileIdentifiers)) {
             return new CommandResult(CommandResultType.FAILURE, IDENTIFIER_CONTAINS_ILLEGAL_CHARACTER_MESSAGE);
         }
-        if (!this.checkUniqueTags(tagMap)) {
-            return new CommandResult(CommandResultType.FAILURE, NOT_UNIQUE_TAG_NAMES_MESSAGE);
-        }
         // load all files with their respective tags
         ArrayList<File> files = new ArrayList<>();
         try {
             files = createFiles(fileIdentifiers, fileTypes, accessAmounts, tagMap);
         } catch (InvalidFileTypeException e) {
             return new CommandResult(CommandResultType.FAILURE, e.getMessage());
+        }
+        if (!checkUniqueTags(files)) {
+            return new CommandResult(CommandResultType.FAILURE, NOT_UNIQUE_TAG_NAMES_MESSAGE);
         }
         HashSet<Tag> tags = new HashSet<>(createUniqueTagSet(files));
         int id = model.getFileRecords().size();
@@ -185,20 +185,6 @@ public class LoadCommand implements Command {
         return true;
     }
 
-    private boolean checkUniqueTags(Map<String, List<String>> tagMap) {
-        ArrayList<String> tags = new ArrayList<>();
-        for (String s : tagMap.keySet()) {
-            tags.addAll(tagMap.get(s));
-        }
-        Set<String> uniqueTags = new HashSet<>();
-        for (String s : tags) {
-            if (!uniqueTags.add(s)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private Tag createTag(String tag) {
         Tag newTag;
         String name;
@@ -247,6 +233,22 @@ public class LoadCommand implements Command {
             tags.addAll(file.getTags());
         }
         return tags;
+    }
+
+    private boolean checkUniqueTags(List<File> files) {
+        HashMap<String, String> tagNames = new HashMap<>();
+        for (File file : files) {
+            for (Tag tag : file.getTags()) {
+                if (!tagNames.containsKey(tag.getName())) {
+                    tagNames.put(tag.getName(), tag.getClass().toString());
+                } else {
+                    if (!tag.getClass().toString().equals(tagNames.get(tag.getName()))) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
 
