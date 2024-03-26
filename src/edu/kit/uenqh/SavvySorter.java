@@ -20,6 +20,7 @@ public final class SavvySorter {
      * Private constructor to prevent instantiation.
      */
     private SavvySorter() {
+
     }
 
     /**
