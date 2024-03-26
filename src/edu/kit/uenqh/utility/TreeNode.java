@@ -26,6 +26,7 @@ public class TreeNode {
     private final HashMap<String, Double> informationGain;
     private String connectingEdge;
     private double probability;
+    private String path;
     private final List<TreeNode> children;
     private final List<File> files;
 
@@ -111,7 +112,11 @@ public class TreeNode {
      * Sorts the children of the TreeNode based on probability (descending) and identifier (lexicographically).
      */
     private void sortChildren() {
-        this.children.sort(Comparator.comparingDouble(TreeNode::getProbability).thenComparing(TreeNode::getIdentifier).reversed());
+        this.children.sort(Comparator.comparingDouble(TreeNode::getProbability).reversed().thenComparing(TreeNode::getPath));
+    }
+
+    private void sortFiles() {
+        this.files.sort(Comparator.comparing(File::getIdentifier));
     }
 
     /**
@@ -121,6 +126,10 @@ public class TreeNode {
      */
     public double getProbability() {
         return probability;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     /**
@@ -175,6 +184,7 @@ public class TreeNode {
     private StringBuilder printTreeRecursive(TreeNode node, StringBuilder builder, String path) {
         if (node.children.isEmpty()) {
             builder.append(PREFIX);
+            node.sortFiles();
             for (File file : node.files) {
                 builder.append(String.format(FINAL_CHILD_OUTPUT_FORMAT, file.getIdentifier()));
                 builder.append(NEXT_LINE);
@@ -182,7 +192,6 @@ public class TreeNode {
             }
             builder.replace(builder.length() - PREFIX.length() - path.length(), builder.length(), "");
         } else {
-            node.sortChildren();
             for (TreeNode child : node.children) {
                 StringBuilder newPath = new StringBuilder();
                 newPath.append(path);
@@ -190,10 +199,14 @@ public class TreeNode {
                 newPath.append(node.identifier);
                 newPath.append(TAG_CONNECTOR);
                 newPath.append(child.getConnectingEdge());
+                child.path = newPath.toString();
+            }
+            node.sortChildren();
+            for (TreeNode child : node.children) {
                 if (child.getChildren().isEmpty()) {
-                    builder.append(newPath);
+                    builder.append(child.path);
                 }
-                builder.append(printTreeRecursive(child, new StringBuilder(), newPath.toString()));
+                builder.append(printTreeRecursive(child, new StringBuilder(), child.path));
             }
         }
         return builder;
