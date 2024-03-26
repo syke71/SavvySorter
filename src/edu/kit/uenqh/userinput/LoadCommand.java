@@ -69,11 +69,11 @@ public class LoadCommand implements Command {
     @Override
     public CommandResult execute(SortingSystem model, String[] commandArguments) {
         String path = commandArguments[ARGUMENT_INDEX];
-        if (!Files.exists((Paths.get(path)))) {
+        if (!Files.exists(Paths.get(path))) {
             return new CommandResult(CommandResultType.FAILURE, String.format(FILE_DOES_NOT_EXIST_FORMAT, path));
         }
         List<String> entries = readFile(path);
-        if (entries == null) {
+        if (entries == null || entries.isEmpty()) {
             return new CommandResult(CommandResultType.FAILURE, EMPTY_FILE_MESSAGE);
         }
         if (!checkLegalFileFormat(model, entries)) {
