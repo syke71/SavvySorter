@@ -1,7 +1,7 @@
 package edu.kit.uenqh.model.files.tags;
 
 import static edu.kit.uenqh.model.files.FileConstants.BINARY_TAG_NAME;
-import static edu.kit.uenqh.model.files.FileConstants.CATEGORICAL_TAG_NAME;
+import static edu.kit.uenqh.model.files.FileConstants.MULTI_VALUE_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.NUMERIC_TAG_NAME;
 
 /**
@@ -31,7 +31,7 @@ public final class TagFactory {
     public static Tag createTag(String tagType, String name, String value) {
         return switch (tagType) {
             case BINARY_TAG_NAME -> new BinaryTag(name, BinaryTagType.valueOf(value.toUpperCase()));
-            case CATEGORICAL_TAG_NAME -> new CategoricalTag(name, value);
+            case MULTI_VALUE_TAG_NAME -> new MultiValueTag(name, value);
             case NUMERIC_TAG_NAME -> new NumericTag(name, Integer.parseInt(value));
             default -> throw new IllegalArgumentException(INVALID_TAG_TYPE_MESSAGE + tagType);
         };

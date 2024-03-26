@@ -43,9 +43,9 @@ public final class FileConstants {
     public static final String BINARY_TAG_NAME = "binary";
 
     /**
-     * Name of a categorical tag.
+     * Name of a multi value tag.
      */
-    public static final String CATEGORICAL_TAG_NAME = "categorical";
+    public static final String MULTI_VALUE_TAG_NAME = "multiValue";
 
     /**
      * Name of a numeric tag.

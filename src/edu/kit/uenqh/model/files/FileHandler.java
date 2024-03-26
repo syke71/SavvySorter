@@ -1,7 +1,7 @@
 package edu.kit.uenqh.model.files;
 
 import edu.kit.uenqh.model.SortingSystem;
-import edu.kit.uenqh.model.files.tags.CategoricalTag;
+import edu.kit.uenqh.model.files.tags.MultiValueTag;
 import edu.kit.uenqh.model.files.tags.NumericTag;
 import edu.kit.uenqh.model.files.tags.Tag;
 import edu.kit.uenqh.model.files.tags.TagFactory;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static edu.kit.uenqh.model.files.FileConstants.CATEGORICAL_TAG_NAME;
+import static edu.kit.uenqh.model.files.FileConstants.MULTI_VALUE_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.TEXT_FILE_NAME;
 
 /**
@@ -82,7 +82,7 @@ public class FileHandler {
             Tag tag = file.getTags().get(i);
             if (tag instanceof NumericTag && tag.getName().equalsIgnoreCase(NUMERIC_SIZE_TAG_NAME)) {
                 int size = Integer.parseInt(tag.getValue());
-                Tag newTag = TagFactory.createTag(CATEGORICAL_TAG_NAME, IMAGE_SIZE_TAG_NAME, ImageFile.imageSizeConverter(size));
+                Tag newTag = TagFactory.createTag(MULTI_VALUE_TAG_NAME, IMAGE_SIZE_TAG_NAME, ImageFile.imageSizeConverter(size));
                 file.getTags().set(i, newTag);
             }
         }
@@ -94,9 +94,9 @@ public class FileHandler {
             Tag tag = file.getTags().get(i);
             if (tag instanceof NumericTag && tag.getName().equalsIgnoreCase(NUMERIC_LENGTH_TAG_NAME)) {
                 int length = Integer.parseInt(tag.getValue());
-                Tag newTag = TagFactory.createTag(CATEGORICAL_TAG_NAME, AUDIO_LENGTH_TAG_NAME, AudioFile.audioLengthConverter(length));
+                Tag newTag = TagFactory.createTag(MULTI_VALUE_TAG_NAME, AUDIO_LENGTH_TAG_NAME, AudioFile.audioLengthConverter(length));
                 file.getTags().set(i, newTag);
-            } else if (tag instanceof CategoricalTag && tag.getName().equalsIgnoreCase(GENRE_TAG_NAME)) {
+            } else if (tag instanceof MultiValueTag && tag.getName().equalsIgnoreCase(GENRE_TAG_NAME)) {
                 tag.setName(AUDIO_GENRE_TAG_NAME);
             }
         }
@@ -108,9 +108,9 @@ public class FileHandler {
             Tag tag = file.getTags().get(i);
             if (tag instanceof NumericTag && tag.getName().equalsIgnoreCase(NUMERIC_LENGTH_TAG_NAME)) {
                 int length = Integer.parseInt(tag.getValue());
-                Tag newTag = TagFactory.createTag(CATEGORICAL_TAG_NAME, VIDEO_LENGTH_TAG_NAME, VideoFile.videoLengthConverter(length));
+                Tag newTag = TagFactory.createTag(MULTI_VALUE_TAG_NAME, VIDEO_LENGTH_TAG_NAME, VideoFile.videoLengthConverter(length));
                 file.getTags().set(i, newTag);
-            } else if (tag instanceof CategoricalTag && tag.getName().equalsIgnoreCase(GENRE_TAG_NAME)) {
+            } else if (tag instanceof MultiValueTag && tag.getName().equalsIgnoreCase(GENRE_TAG_NAME)) {
                 tag.setName(VIDEO_GENRE_TAG_NAME);
             }
         }
@@ -122,9 +122,9 @@ public class FileHandler {
             Tag tag = file.getTags().get(i);
             if (tag instanceof NumericTag && tag.getName().equalsIgnoreCase(WORDS_TAG_NAME)) {
                 int length = Integer.parseInt(tag.getValue());
-                Tag newTag = TagFactory.createTag(CATEGORICAL_TAG_NAME, TEXT_FILE_NAME, TextFile.textLengthConverter(length));
+                Tag newTag = TagFactory.createTag(MULTI_VALUE_TAG_NAME, TEXT_FILE_NAME, TextFile.textLengthConverter(length));
                 file.getTags().set(i, newTag);
-            } else if (tag instanceof CategoricalTag && tag.getName().equalsIgnoreCase(GENRE_TAG_NAME)) {
+            } else if (tag instanceof MultiValueTag && tag.getName().equalsIgnoreCase(GENRE_TAG_NAME)) {
                 tag.setName(TEXT_GENRE_TAG_NAME);
             }
         }

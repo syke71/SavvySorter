@@ -3,29 +3,29 @@ package edu.kit.uenqh.model.files.tags;
 import java.util.Objects;
 
 /**
- * Represents a categorical tag.
+ * Represents a multi value tag.
  * Extends the {@link Tag} class.
  *
  * @author uenqh
  */
-public class CategoricalTag extends Tag {
+public class MultiValueTag extends Tag {
     private final String value;
 
     /**
-     * Constructs a new CategoricalTag object with the specified name and value.
+     * Constructs a new MultiValueTag object with the specified name and value.
      *
-     * @param name  the name of the categorical tag
-     * @param value the value of the categorical tag
+     * @param name  the name of the multi value tag
+     * @param value the value of the multi value tag
      */
-    public CategoricalTag(String name, String value) {
+    public MultiValueTag(String name, String value) {
         super(name);
         this.value = value;
     }
 
     /**
-     * Retrieves the value of the categorical tag.
+     * Retrieves the value of the multi value tag.
      *
-     * @return the value of the categorical tag
+     * @return the value of the multi value tag
      */
     @Override
     public String getValue() {
@@ -46,7 +46,7 @@ public class CategoricalTag extends Tag {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CategoricalTag tag = (CategoricalTag) o;
+        MultiValueTag tag = (MultiValueTag) o;
         return this.hashCode() == tag.hashCode();
     }
 

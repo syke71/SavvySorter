@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static edu.kit.uenqh.model.files.FileConstants.BINARY_TAG_NAME;
-import static edu.kit.uenqh.model.files.FileConstants.CATEGORICAL_TAG_NAME;
+import static edu.kit.uenqh.model.files.FileConstants.MULTI_VALUE_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.NUMERIC_TAG_NAME;
 import static edu.kit.uenqh.model.files.FileConstants.PROGRAM_FILE_NAME;
 import static edu.kit.uenqh.userinput.CommandConstants.MIN_ACCESS_AMOUNT;
@@ -45,9 +45,9 @@ public class LoadCommand implements Command {
     private static final int FILE_ACCESS_AMOUNT_INDEX = 2;
     private static final int TAG_START_INDEX = 3;
     private static final int MIN_ENTRY_ARRAY_LENGTH = 3;
-    private static final String CATEGORICAL_TAG_SPLIT_SYMBOL = "=";
-    private static final int CATEGORICAL_TAG_NAME_INDEX = 0;
-    private static final int CATEGORICAL_TAG_VALUE_INDEX = 1;
+    private static final String MULTI_VALUE_TAG_SPLIT_SYMBOL = "=";
+    private static final int MULTI_VALUE_TAG_NAME_INDEX = 0;
+    private static final int MULTI_VALUE_TAG_VALUE_INDEX = 1;
     private static final String ILLEGAL_IDENTIFIER_CHARACTER = " ";
     private static final String EXECUTABLE_TAG_NAME = "executable";
     private static final String LOADED_SUCCESSFULLY_FORMAT = "Loaded %s with id: %s";
@@ -55,6 +55,8 @@ public class LoadCommand implements Command {
     private static final String EMPTY_FILE_MESSAGE = "loaded file was empty!";
     private static final String WRONG_FILE_FORMAT = "entries within the loaded file are not formatted correctly!";
     private static final String NOT_UNIQUE_FILE_IDENTIFIER_MESSAGE = "the loaded file contains reoccurring file identifiers!";
+    private static final String NOT_UNIQUE_TAG_NAMES_MESSAGE = "the loaded file contains reoccurring tags!";
+
     private static final String IDENTIFIER_CONTAINS_ILLEGAL_CHARACTER_MESSAGE = "the loaded file contains illegal characters!";
     private static final String INVALID_ACCESS_AMOUNT_FORMAT = "the loaded file contains an invalid access amount of %s in line %s!";
 
@@ -82,21 +84,21 @@ public class LoadCommand implements Command {
         }
         String[] fileIdentifiers = new String[entries.size()];
         String[] fileTypes = new String[entries.size()];
-        int[] fileAccessAmounts = new int[entries.size()];
+        int[] accessAmounts = new int[entries.size()];
         Map<String, List<String>> tagMap = new HashMap<>();
         int step = 0;
         for (String s : entries) {
             String[] splitEntry = s.trim().split(COMMAND_SEPARATOR_REGEX);
             fileIdentifiers[step] = splitEntry[UNIQUE_FILE_IDENTIFIER_INDEX];
             fileTypes[step] = splitEntry[FILE_TYPE_INDEX];
-            fileAccessAmounts[step] = Integer.parseInt(splitEntry[FILE_ACCESS_AMOUNT_INDEX]);
+            accessAmounts[step] = Integer.parseInt(splitEntry[FILE_ACCESS_AMOUNT_INDEX]);
             List<String> list = new ArrayList<>(Arrays.asList(splitEntry).subList(TAG_START_INDEX, splitEntry.length));
             tagMap.put(fileIdentifiers[step], list);
             step++;
         }
         for (int i = 0; i < entries.size(); i++) {
-            if (fileAccessAmounts[i] < MIN_ACCESS_AMOUNT) {
-                return new CommandResult(CommandResultType.FAILURE, INVALID_ACCESS_AMOUNT_FORMAT.formatted(fileAccessAmounts[i], i + 1));
+            if (accessAmounts[i] < MIN_ACCESS_AMOUNT) {
+                return new CommandResult(CommandResultType.FAILURE, INVALID_ACCESS_AMOUNT_FORMAT.formatted(accessAmounts[i], i + 1));
             }
         }
         if (!this.checkUniqueFileIdentifiers(fileIdentifiers)) {
@@ -105,22 +107,15 @@ public class LoadCommand implements Command {
         if (!this.checkLegalFileIdentifiers(fileIdentifiers)) {
             return new CommandResult(CommandResultType.FAILURE, IDENTIFIER_CONTAINS_ILLEGAL_CHARACTER_MESSAGE);
         }
+        if (!this.checkUniqueTags(tagMap)) {
+            return new CommandResult(CommandResultType.FAILURE, NOT_UNIQUE_TAG_NAMES_MESSAGE);
+        }
         // load all files with their respective tags
         ArrayList<File> files = new ArrayList<>();
-        for (int i = 0; i < fileIdentifiers.length; i++) {
-            File file;
-            try {
-                file = FileFactory.createFile(fileTypes[i], fileIdentifiers[i], fileAccessAmounts[i]);
-            } catch (InvalidFileTypeException e) {
-                return new CommandResult(CommandResultType.FAILURE, e.getMessage());
-            }
-            for (String tag : tagMap.get(fileIdentifiers[i])) {
-                file.getTags().add(createTag(tag));
-            }
-            if (fileTypes[i].equals(PROGRAM_FILE_NAME)) {
-                file.getTags().add(createExecutableTag());
-            }
-            files.add(file);
+        try {
+            files = createFiles(fileIdentifiers, fileTypes, accessAmounts, tagMap);
+        } catch (InvalidFileTypeException e) {
+            return new CommandResult(CommandResultType.FAILURE, e.getMessage());
         }
         HashSet<Tag> tags = new HashSet<>(createUniqueTagSet(files));
         int id = model.getFileRecords().size();
@@ -190,25 +185,60 @@ public class LoadCommand implements Command {
         return true;
     }
 
+    private boolean checkUniqueTags(Map<String, List<String>> tagMap) {
+        ArrayList<String> tags = new ArrayList<>();
+        for (String s : tagMap.keySet()) {
+            tags.addAll(tagMap.get(s));
+        }
+        Set<String> uniqueTags = new HashSet<>();
+        for (String s : tags) {
+            if (!uniqueTags.add(s)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private Tag createTag(String tag) {
         Tag newTag;
         String name;
         String value;
-        if (tag.contains(CATEGORICAL_TAG_SPLIT_SYMBOL)) {
-            String[] splitTag = tag.trim().split(CATEGORICAL_TAG_SPLIT_SYMBOL);
-            name = splitTag[CATEGORICAL_TAG_NAME_INDEX];
-            value = splitTag[CATEGORICAL_TAG_VALUE_INDEX];
+        if (tag.contains(MULTI_VALUE_TAG_SPLIT_SYMBOL)) {
+            String[] splitTag = tag.trim().split(MULTI_VALUE_TAG_SPLIT_SYMBOL);
+            name = splitTag[MULTI_VALUE_TAG_NAME_INDEX];
+            value = splitTag[MULTI_VALUE_TAG_VALUE_INDEX];
             try {
-                Integer.parseInt(splitTag[CATEGORICAL_TAG_VALUE_INDEX]);
+                Integer.parseInt(splitTag[MULTI_VALUE_TAG_VALUE_INDEX]);
                 newTag = TagFactory.createTag(NUMERIC_TAG_NAME, name, value);
             } catch (NumberFormatException ignored) {
-                newTag = TagFactory.createTag(CATEGORICAL_TAG_NAME, name, value);
+                newTag = TagFactory.createTag(MULTI_VALUE_TAG_NAME, name, value);
             }
         } else {
             name = tag;
             newTag = TagFactory.createTag(BINARY_TAG_NAME, name, String.valueOf(BinaryTagType.DEFINED));
         }
         return newTag;
+    }
+
+    private ArrayList<File> createFiles(String[] fileIdentifiers, String[] fileTypes, int[] accessAmounts, Map<String, List<String>> tagMap)
+        throws InvalidFileTypeException {
+        ArrayList<File> files = new ArrayList<>();
+        for (int i = 0; i < fileIdentifiers.length; i++) {
+            File file;
+            try {
+                file = FileFactory.createFile(fileTypes[i], fileIdentifiers[i], accessAmounts[i]);
+            } catch (InvalidFileTypeException e) {
+                throw new InvalidFileTypeException(e.getMessage());
+            }
+            for (String tag : tagMap.get(fileIdentifiers[i])) {
+                file.getTags().add(createTag(tag));
+            }
+            if (fileTypes[i].equals(PROGRAM_FILE_NAME)) {
+                file.getTags().add(createExecutableTag());
+            }
+            files.add(file);
+        }
+        return files;
     }
 
     private HashSet<Tag> createUniqueTagSet(List<File> files) {
