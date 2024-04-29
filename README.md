@@ -1,3 +1,2 @@
-# Programmieraufgabe - Repository Vorlage
-Im Verzeichnis src/ sind alle Quelltextdateien und Pakete abzulegen.
-Elemente außerhalb des src/ Verzeichnisses werden nicht kompiliert und folglich nicht berücksichtigt.
+# Programmieraufgabe - Teil 2
+Diese Aufgabe ist teil der Programmierenklausur WS23/24 gewesen.
